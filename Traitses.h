@@ -25,8 +25,6 @@ class TCTraitses
       }
     }
 
-  private:
-
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     struct TSItem
@@ -65,10 +63,8 @@ class TCTraitses
 
     typedef std::vector<TDItem> TDItems;
 
-    static const TDItems mItems;
-
     template <class TATraits, class TAMember>
-    static TDItem MakeItem(const TATraits& Traits, TAMember Member)
+    static TDItem MakeItem_(const TATraits& Traits, TAMember Member)
     {
       typedef typename TATraits::TDType TDType;
 
@@ -77,6 +73,10 @@ class TCTraitses
         boost::bind<const TDType&>(Member, _1));
     }
 
+  private:
+
+    static const TDItems mItems;
+
 };
 
 template <class TAObject, class TATraits, class TAMember>
@@ -84,11 +84,5 @@ static typename TCTraitses<TAObject>::TDItem MakeItem(
   const TATraits& Traits,
   TAMember Member)
 {
-  typedef typename TATraits::TDType TDType;
-
-  typedef typename TCTraitses<TAObject>::template TSItemType<TDType, TATraits> TDItemType;
-
-  return boost::make_shared<TDItemType>(
-    &Traits,
-    boost::bind<const TDType&>(Member, _1));
+  return TCTraitses<TAObject>::MakeItem_(Traits, Member);
 }
