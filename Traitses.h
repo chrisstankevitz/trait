@@ -78,3 +78,17 @@ class TCTraitses
     }
 
 };
+
+template <class TAObject, class TATraits, class TAMember>
+static typename TCTraitses<TAObject>::TDItem MakeItem(
+  const TATraits& Traits,
+  TAMember Member)
+{
+  typedef typename TATraits::TDType TDType;
+
+  typedef typename TCTraitses<TAObject>::template TSItemType<TDType, TATraits> TDItemType;
+
+  return boost::make_shared<TDItemType>(
+    &Traits,
+    boost::bind<const TDType&>(Member, _1));
+}

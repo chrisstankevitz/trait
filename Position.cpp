@@ -17,8 +17,6 @@ const TCTraitsDouble TCPosition::sAltitudeTraits(
 
 const TCTraitsUnsigned TCPosition::sStepsTraits("Steps");
 
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
 template <>
 const TCTraitses<TCPosition>::TDItems TCTraitses<TCPosition>::mItems =
 {
@@ -33,5 +31,7 @@ const TCTraitses<TCPosition>::TDItems TCTraitses<TCPosition>::mItems =
   TCTraitses<TCPosition>::MakeItem(
     TCPosition::sStepsTraits,
     &TCPosition::mSteps)
-};
 
+  //MakeItem<TCPosition>(TCPosition::sLatitudeTraits, &TCPosition::mLatitude)
+
+};
