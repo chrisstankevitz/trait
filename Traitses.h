@@ -17,6 +17,16 @@ class TCTraitses
 {
   public:
 
+    void PrintValues(const TAObject* pObject)
+    {
+      for (const auto& pItem : mItems)
+      {
+        pItem->PrintValue(pObject);
+      }
+    }
+
+  protected:
+
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     struct TSItem
@@ -29,14 +39,6 @@ class TCTraitses
     typedef boost::shared_ptr<const TSItem> TDItem;
 
     typedef std::vector<TDItem> TDItems;
-
-    void PrintValues(const TAObject* pObject)
-    {
-      for (const auto& pItem : mItems)
-      {
-        pItem->PrintValue(pObject);
-      }
-    }
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
