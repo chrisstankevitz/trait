@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TraitsDouble.h"
+#include "TraitsUnsigned.h"
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 #include <boost/variant.hpp>
@@ -44,7 +45,7 @@ class TCTraitses
       boost::function<const typename TATraits::TDType&(const TAObject*)> mGet;
     };
 
-    typedef boost::variant<TSItem<TCTraitsDouble>> TDItem;
+    typedef boost::variant<TSItem<TCTraitsDouble>, TSItem<TCTraitsUnsigned>> TDItem;
 
     typedef std::vector<TDItem> TDItems;
 

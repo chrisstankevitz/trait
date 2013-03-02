@@ -21,8 +21,8 @@ const TCTraitsUnsigned TCPositionUiTraits::sStepsTraits("Steps");
 TCPositionUiTraits::TCPositionUiTraits()
   : TCTraitses<TCPosition>({
   Make(sLatitudeTraits, &TCPosition::mLatitude),
-  Make(sAltitudeTraits, &TCPosition::mAltitude)
-//  , Make(sStepsTraits, &TCPosition::mSteps)
+  Make(sAltitudeTraits, &TCPosition::mAltitude),
+  Make(sStepsTraits, &TCPosition::mSteps)
   })
 {
 }
