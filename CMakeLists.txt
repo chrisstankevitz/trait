@@ -17,6 +17,7 @@ TARGET_LINK_LIBRARIES(Traits
 
 ADD_LIBRARY(Position
   Position.cpp
+  PositionUiTraits.cpp
   )
 
 TARGET_LINK_LIBRARIES(Position

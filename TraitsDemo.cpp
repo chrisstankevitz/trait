@@ -1,5 +1,6 @@
 #include "Traitses.h"
 #include "Position.h"
+#include "PositionUiTraits.h"
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -13,7 +14,9 @@ int main()
 
   Position.mSteps = 4;
 
-  TCTraitses<TCPosition>::PrintValues(&Position);
+  static TCPositionUiTraits PositionUiTraits;
+
+  PositionUiTraits.PrintValues(&Position);
 
   return 0;
 }

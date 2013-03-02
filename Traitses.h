@@ -17,7 +17,20 @@ class TCTraitses
 {
   public:
 
-    static void PrintValues(const TAObject* pObject)
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    struct TSItem
+    {
+      virtual ~TSItem() {}
+
+      virtual void PrintValue(const TAObject* pObject) const = 0;
+    };
+
+    typedef boost::shared_ptr<const TSItem> TDItem;
+
+    typedef std::vector<TDItem> TDItems;
+
+    void PrintValues(const TAObject* pObject)
     {
       for (const auto& pItem : mItems)
       {
@@ -27,12 +40,10 @@ class TCTraitses
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
-    struct TSItem
+    TCTraitses(const std::vector<TDItem>& Items)
+      : mItems(Items)
     {
-      virtual ~TSItem() {}
-
-      virtual void PrintValue(const TAObject* pObject) const = 0;
-    };
+    }
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
@@ -59,12 +70,8 @@ class TCTraitses
       boost::function<const TAType&(const TAObject*)> mGetType;
     };
 
-    typedef boost::shared_ptr<const TSItem> TDItem;
-
-    typedef std::vector<TDItem> TDItems;
-
     template <class TATraits, class TAMember>
-    static TDItem MakeItem_(const TATraits& Traits, TAMember Member)
+    static TDItem Make(const TATraits& Traits, TAMember Member)
     {
       typedef typename TATraits::TDType TDType;
 
@@ -75,14 +82,6 @@ class TCTraitses
 
   private:
 
-    static const TDItems mItems;
+    const TDItems mItems;
 
 };
-
-template <class TAObject, class TATraits, class TAMember>
-static typename TCTraitses<TAObject>::TDItem MakeItem(
-  const TATraits& Traits,
-  TAMember Member)
-{
-  return TCTraitses<TAObject>::MakeItem_(Traits, Member);
-}
