@@ -1,3 +1,4 @@
+#include "TraitsPrinter.h"
 #include "Traitses.h"
 #include "Position.h"
 #include "PositionUiTraits.h"
@@ -16,7 +17,7 @@ int main()
 
   static TCPositionUiTraits PositionUiTraits;
 
-  PositionUiTraits.PrintValues(&Position);
+  PositionUiTraits.Visit(TCTraitsPrinter(), &Position);
 
   return 0;
 }

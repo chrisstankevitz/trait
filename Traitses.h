@@ -1,27 +1,26 @@
 #pragma once
 
+#include "TraitsDouble.h"
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
-#include <boost/make_shared.hpp>
-#include <boost/shared_ptr.hpp>
-#include <string>
+#include <boost/variant.hpp>
 #include <vector>
 
 //-----------------------------------------------------------------------------
-// This class holds all the traits ("traitses") for any object.  If you use it
-// be sure to create a specialization of TCTraitses::mItems for your particular
-// object, in the order you like.
 //-----------------------------------------------------------------------------
 template <class TAObject>
 class TCTraitses
 {
   public:
 
-    void PrintValues(const TAObject* pObject)
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    template<class TAVisitor>
+    void Visit(const TAVisitor& Visitor, TAObject* pObject)
     {
-      for (const auto& pItem : mItems)
+      for (const auto& Item : mItems)
       {
-        pItem->PrintValue(pObject);
+        boost::apply_visitor(TCVisitor<TAVisitor>(Visitor, pObject), Item);
       }
     }
 
@@ -29,16 +28,51 @@ class TCTraitses
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    template <class TATraits>
     struct TSItem
     {
-      virtual ~TSItem() {}
+      TSItem(
+        const TATraits* pTraits,
+        boost::function<const typename TATraits::TDType&(const TAObject*)> Get)
+        : mpTraits(pTraits),
+          mGet(Get)
+      {
+      }
 
-      virtual void PrintValue(const TAObject* pObject) const = 0;
+      const TATraits* mpTraits;
+
+      boost::function<const typename TATraits::TDType&(const TAObject*)> mGet;
     };
 
-    typedef boost::shared_ptr<const TSItem> TDItem;
+    typedef boost::variant<TSItem<TCTraitsDouble>> TDItem;
 
     typedef std::vector<TDItem> TDItems;
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    template<class TAVisitor>
+    class TCVisitor : public boost::static_visitor<void>
+    {
+      public:
+
+        TCVisitor(const TAVisitor& Visitor, TAObject* pObject)
+          : mVisitor(Visitor),
+            mpObject(pObject)
+        {
+        }
+
+        template <class TATraits>
+        void operator()(const TSItem<TATraits>& Item) const
+        {
+          mVisitor(*Item.mpTraits, Item.mGet(mpObject));
+        }
+
+      private:
+
+        const TAVisitor& mVisitor;
+
+        TAObject* mpObject;
+    };
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
@@ -49,37 +83,12 @@ class TCTraitses
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
-    template <typename TAType, class TATypeTraits>
-    struct TSItemType : public TSItem
-    {
-      TSItemType(
-        const TATypeTraits* pTypeTraits,
-        boost::function<const TAType&(const TAObject*)> GetType)
-        : mpTypeTraits(pTypeTraits),
-          mGetType(GetType)
-      {
-      }
-
-      void PrintValue(const TAObject* pObject) const
-      {
-        std::cout
-          << mpTypeTraits->GetString(mGetType(pObject))
-          << std::endl;
-      }
-
-      const TATypeTraits* mpTypeTraits;
-
-      boost::function<const TAType&(const TAObject*)> mGetType;
-    };
-
     template <class TATraits, class TAMember>
     static TDItem Make(const TATraits& Traits, TAMember Member)
     {
       typedef typename TATraits::TDType TDType;
 
-      return boost::make_shared<TSItemType<TDType, TATraits>>(
-        &Traits,
-        boost::bind<const TDType&>(Member, _1));
+      return TSItem<TATraits>(&Traits, boost::bind<const TDType&>(Member, _1));
     }
 
   private:

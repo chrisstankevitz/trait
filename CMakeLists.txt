@@ -8,6 +8,7 @@ ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
 ADD_LIBRARY(Traits
   TraitsDouble.cpp
+  TraitsPrinter.cpp
   TraitsUnsigned.cpp
   Traitses.cpp
   )
