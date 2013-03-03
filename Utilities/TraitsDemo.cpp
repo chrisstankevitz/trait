@@ -25,7 +25,9 @@ int main()
 
   TCIoTraitsEncoder IoTraitsEncoder;
 
-  PositionIoTraits.Visit(IoTraitsEncoder, const_cast<const TCPosition&>(Position));
+  PositionIoTraits.Visit(
+    IoTraitsEncoder,
+    const_cast<const TCPosition&>(Position));
 
   std::cout
     << "Encoded position byte count: "
