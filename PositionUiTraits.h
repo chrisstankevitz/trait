@@ -7,7 +7,8 @@
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-class TCPositionUiTraits : public TCTraitses<TCPosition>
+class TCPositionUiTraits
+: public TCTraitses<TCPosition, TCTraitsDouble, TCTraitsUnsigned>
 {
   public:
 

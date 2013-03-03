@@ -1,5 +1,5 @@
 #pragma once
-#include "TraitsDouble.h"
+
 #include <iostream>
 
 //-----------------------------------------------------------------------------

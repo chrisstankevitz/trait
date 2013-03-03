@@ -1,7 +1,6 @@
 #pragma once
 
-#include "TraitsDouble.h"
-#include "TraitsUnsigned.h"
+#include "WrappingVariantMaker.h"
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 #include <boost/variant.hpp>
@@ -9,7 +8,7 @@
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-template <class TAObject>
+template <class TAObject, class ... TAAllowableTraits>
 class TCTraitses
 {
   public:
@@ -45,7 +44,8 @@ class TCTraitses
       boost::function<const typename TATraits::TDType&(const TAObject*)> mGet;
     };
 
-    typedef boost::variant<TSItem<TCTraitsDouble>, TSItem<TCTraitsUnsigned>> TDItem;
+    typedef typename
+      TSWrappingVariantMaker<TSItem, TAAllowableTraits ...>::TDResult TDItem;
 
     typedef std::vector<TDItem> TDItems;
 

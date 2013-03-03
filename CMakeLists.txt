@@ -11,6 +11,7 @@ ADD_LIBRARY(Traits
   TraitsPrinter.cpp
   TraitsUnsigned.cpp
   Traitses.cpp
+  WrappingVariantMaker.cpp
   )
 
 TARGET_LINK_LIBRARIES(Traits
