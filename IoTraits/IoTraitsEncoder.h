@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boost/function.hpp>
 #include <iostream>
 #include <sstream>
 
@@ -26,12 +27,14 @@ class TCIoTraitsEncoder
       return mStringStream.str();
     }
 
-    template <typename TATraits>
+    template <class TATraits, class TAObject>
     void operator()(
       const TATraits& Traits,
-      const typename TATraits::TDType& Value)
+      const TAObject& Object,
+      const boost::function<const typename TATraits::TDType&(const TAObject&)>& Get,
+      const boost::function<void (TAObject&, const typename TATraits::TDType&)>& Set)
     {
-      Traits.Write(Value, mStream);
+      Traits.Write(Get(Object), mStream);
     }
 
     std::ostringstream mStringStream;

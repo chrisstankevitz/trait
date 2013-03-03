@@ -19,7 +19,7 @@ int main()
 
   static TCPositionUiTraits PositionUiTraits;
 
-  PositionUiTraits.Visit(TCUiTraitsPrinter(), Position);
+  PositionUiTraits.Visit<const TCUiTraitsPrinter&>(TCUiTraitsPrinter(), Position);
 
   static TCPositionIoTraits PositionIoTraits;
 
@@ -38,7 +38,7 @@ int main()
 
   std::cout << "Decoded position:\n";
 
-  PositionUiTraits.Visit(TCUiTraitsPrinter(), Position);
+  PositionUiTraits.Visit<const TCUiTraitsPrinter&>(TCUiTraitsPrinter(), Position);
 
   return 0;
 }

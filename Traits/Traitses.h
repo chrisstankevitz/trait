@@ -14,47 +14,19 @@ class TCTraitses
   public:
 
     //-------------------------------------------------------------------------
-    // Visitor: const
-    // Object: const
     //-------------------------------------------------------------------------
-    template<class TAVisitor>
-    void Visit(const TAVisitor& Visitor, const TAObject& Object)
+    template<class TAMutableOrConstVisitor, class TAMutableOrConstObject>
+    void Visit(
+      TAMutableOrConstVisitor& MutableorConstVisitor,
+      TAMutableOrConstObject& MutableorConstObject)
     {
-      TCVisitorCC<TAVisitor> VisitorCC(Visitor, Object);
+      TCVisitor<TAMutableOrConstVisitor, TAMutableOrConstObject> Visitor(
+        MutableorConstVisitor,
+        MutableorConstObject);
 
       for (const auto& Item : mItems)
       {
-        boost::apply_visitor(VisitorCC, Item);
-      }
-    }
-
-    //-------------------------------------------------------------------------
-    // Visitor: mutable
-    // Object: const
-    //-------------------------------------------------------------------------
-    template<class TAVisitor>
-    void Visit(TAVisitor& Visitor, const TAObject& Object)
-    {
-      TCVisitorMC<TAVisitor> VisitorMC(Visitor, Object);
-
-      for (const auto& Item : mItems)
-      {
-        boost::apply_visitor(VisitorMC, Item);
-      }
-    }
-
-    //-------------------------------------------------------------------------
-    // Visitor: mutable
-    // Object: mutable
-    //-------------------------------------------------------------------------
-    template<class TAVisitor>
-    void Visit(TAVisitor& Visitor, TAObject& Object)
-    {
-      TCVisitorMM<TAVisitor> VisitorMM(Visitor, Object);
-
-      for (const auto& Item : mItems)
-      {
-        boost::apply_visitor(VisitorMM, Item);
+        boost::apply_visitor(Visitor, Item);
       }
     }
 
@@ -95,12 +67,14 @@ class TCTraitses
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
-    template<class TAVisitor>
-    class TCVisitorCC : public boost::static_visitor<void>
+    template<class TAMutableOrConstVisitor, class TAMutableOrConstObject>
+    class TCVisitor : public boost::static_visitor<void>
     {
       public:
 
-      TCVisitorCC(const TAVisitor& Visitor, const TAObject& Object)
+      TCVisitor(
+        TAMutableOrConstVisitor& Visitor,
+        TAMutableOrConstObject& Object)
           : mVisitor(Visitor),
             mObject(Object)
         {
@@ -109,66 +83,14 @@ class TCTraitses
         template <class TATraits>
         void operator()(const TSItem<TATraits>& Item) const
         {
-          mVisitor(*Item.mpTraits, Item.mGet(mObject));
+          mVisitor(*Item.mpTraits, mObject, Item.mGet, Item.mSet);
         }
 
       private:
 
-        const TAVisitor& mVisitor;
+        TAMutableOrConstVisitor& mVisitor;
 
-        const TAObject& mObject;
-    };
-
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    template<class TAVisitor>
-    class TCVisitorMC : public boost::static_visitor<void>
-    {
-      public:
-
-      TCVisitorMC(TAVisitor& Visitor, const TAObject& Object)
-          : mVisitor(Visitor),
-            mObject(Object)
-        {
-        }
-
-        template <class TATraits>
-        void operator()(const TSItem<TATraits>& Item)
-        {
-          mVisitor(*Item.mpTraits, Item.mGet(mObject));
-        }
-
-      private:
-
-        TAVisitor& mVisitor;
-
-        const TAObject& mObject;
-    };
-
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    template<class TAVisitor>
-    class TCVisitorMM : public boost::static_visitor<void>
-    {
-      public:
-
-        TCVisitorMM(TAVisitor& Visitor, TAObject& Object)
-          : mVisitor(Visitor),
-            mObject(Object)
-        {
-        }
-
-        template <class TATraits>
-        void operator()(const TSItem<TATraits>& Item)
-        {
-          Item.mSet(mObject, mVisitor(*Item.mpTraits));
-        }
-
-      private:
-
-        TAVisitor& mVisitor;
-
-        TAObject& mObject;
+        TAMutableOrConstObject& mObject;
     };
 
     //-------------------------------------------------------------------------
