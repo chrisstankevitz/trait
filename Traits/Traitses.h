@@ -4,6 +4,7 @@
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 #include <boost/variant.hpp>
+#include <utility>
 #include <vector>
 
 //-----------------------------------------------------------------------------
@@ -15,14 +16,14 @@ class TCTraitses
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
-    template<class TAMutableOrConstVisitor, class TAMutableOrConstObject>
+    template<class TAUniversalVisitor, class TAUniversalObject>
     void Visit(
-      TAMutableOrConstVisitor& MutableorConstVisitor,
-      TAMutableOrConstObject& MutableorConstObject)
+      TAUniversalVisitor&& UniversalVisitor,
+      TAUniversalObject&&  UniversalObject)
     {
-      TCVisitor<TAMutableOrConstVisitor, TAMutableOrConstObject> Visitor(
-        MutableorConstVisitor,
-        MutableorConstObject);
+      TCVisitor<TAUniversalVisitor, TAUniversalObject> Visitor(
+        std::forward<TAUniversalVisitor>(UniversalVisitor),
+        std::forward<TAUniversalObject>(UniversalObject));
 
       for (const auto& Item : mItems)
       {
@@ -67,16 +68,16 @@ class TCTraitses
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
-    template<class TAMutableOrConstVisitor, class TAMutableOrConstObject>
+    template<class TAUniversalVisitor, class TAUniversalObject>
     class TCVisitor : public boost::static_visitor<void>
     {
       public:
 
       TCVisitor(
-        TAMutableOrConstVisitor& Visitor,
-        TAMutableOrConstObject& Object)
-          : mVisitor(Visitor),
-            mObject(Object)
+        TAUniversalVisitor&& Visitor,
+        TAUniversalObject&& Object)
+          : mVisitor(std::forward<TAUniversalVisitor>(Visitor)),
+            mObject(std::forward<TAUniversalObject>(Object))
         {
         }
 
@@ -88,9 +89,9 @@ class TCTraitses
 
       private:
 
-        TAMutableOrConstVisitor& mVisitor;
+        TAUniversalVisitor&& mVisitor;
 
-        TAMutableOrConstObject& mObject;
+        TAUniversalObject&& mObject;
     };
 
     //-------------------------------------------------------------------------
