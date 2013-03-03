@@ -36,7 +36,7 @@ int main()
 
   TCIoTraitsDecoder IoTraitsDecoder(IoTraitsEncoder.GetBytes());
 
-  //PositionIoTraits.Visit(IoTraitsDecoder, Position);
+  PositionIoTraits.Visit(IoTraitsDecoder, Position);
 
   std::cout << "Decoded position:\n";
 

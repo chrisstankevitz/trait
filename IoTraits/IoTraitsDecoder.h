@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boost/function.hpp>
 #include <iostream>
 #include <sstream>
 
@@ -21,14 +22,18 @@ class TCIoTraitsDecoder
     {
     }
 
-    template <typename TATraits>
-    typename TATraits::TDType operator()(const TATraits& Traits)
+    template <class TATraits, class TAObject>
+    void operator()(
+      const TATraits& Traits,
+      TAObject& Object,
+      const boost::function<const typename TATraits::TDType&(const TAObject&)>& Get,
+      const boost::function<void (TAObject&, const typename TATraits::TDType&)>& Set)
     {
       typename TATraits::TDType Value;
 
       Traits.Read(Value, mStream);
 
-      return Value;
+      Set(Object, Value);
     }
 
     std::istringstream mStringStream;
