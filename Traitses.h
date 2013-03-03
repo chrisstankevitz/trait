@@ -16,7 +16,7 @@ class TCTraitses
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     template<class TAVisitor>
-    void Visit(const TAVisitor& Visitor, TAObject* pObject)
+    void Visit(const TAVisitor& Visitor, const TAObject* pObject)
     {
       for (const auto& Item : mItems)
       {
@@ -56,7 +56,7 @@ class TCTraitses
     {
       public:
 
-        TCVisitor(const TAVisitor& Visitor, TAObject* pObject)
+        TCVisitor(const TAVisitor& Visitor, const TAObject* pObject)
           : mVisitor(Visitor),
             mpObject(pObject)
         {
@@ -72,7 +72,7 @@ class TCTraitses
 
         const TAVisitor& mVisitor;
 
-        TAObject* mpObject;
+        const TAObject* mpObject;
     };
 
     //-------------------------------------------------------------------------
