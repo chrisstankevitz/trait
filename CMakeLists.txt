@@ -6,31 +6,41 @@ IF(CMAKE_COMPILER_IS_GNUCC)
   ADD_DEFINITIONS(-Wall -std=c++0x)
 ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
+INCLUDE_DIRECTORIES(".")
+
 ADD_LIBRARY(Traits
-  Traitses.cpp
-  UiTraitsDouble.cpp
-  UiTraitsPrinter.cpp
-  UiTraitsUnsigned.cpp
-  WrappingVariantMaker.cpp
+  Traits/Traitses.cpp
   )
 
 TARGET_LINK_LIBRARIES(Traits
+  Utility
+  )
+
+ADD_LIBRARY(UiTraits
+  UiTraits/UiTraitsDouble.cpp
+  UiTraits/UiTraitsPrinter.cpp
+  UiTraits/UiTraitsUnsigned.cpp
+  )
+
+ADD_LIBRARY(Utility
+  Utility/WrappingVariantMaker.cpp
   )
 
 ADD_LIBRARY(Position
-  Position.cpp
-  PositionUiTraits.cpp
+  Position/Position.cpp
+  Position/PositionUiTraits.cpp
   )
 
 TARGET_LINK_LIBRARIES(Position
   Traits
+  UiTraits
   )
 
 ADD_EXECUTABLE(TraitsDemo
-  TraitsDemo.cpp
+  Utilities/TraitsDemo.cpp
   )
 
 TARGET_LINK_LIBRARIES(TraitsDemo
   Position
-  Traits
+  UiTraits
   )

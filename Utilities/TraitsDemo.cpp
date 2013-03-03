@@ -1,7 +1,6 @@
-#include "Traitses.h"
-#include "UiTraitsPrinter.h"
-#include "Position.h"
-#include "PositionUiTraits.h"
+#include "UiTraits/UiTraitsPrinter.h"
+#include "Position/Position.h"
+#include "Position/PositionUiTraits.h"
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

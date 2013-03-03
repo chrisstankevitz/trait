@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Position.h"
-#include "Traitses.h"
-#include "UiTraitsDouble.h"
-#include "UiTraitsUnsigned.h"
+#include "Traits/Traitses.h"
+#include "UiTraits/UiTraitsDouble.h"
+#include "UiTraits/UiTraitsUnsigned.h"
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "WrappingVariantMaker.h"
+#include "Utility/WrappingVariantMaker.h"
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 #include <boost/variant.hpp>
