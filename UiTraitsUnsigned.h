@@ -5,13 +5,13 @@
 //-----------------------------------------------------------------------------
 // This class describes characteristics an unsigned parameter has
 //-----------------------------------------------------------------------------
-class TCTraitsUnsigned
+class TCUiTraitsUnsigned
 {
   public:
 
     typedef unsigned TDType;
 
-    TCTraitsUnsigned(
+    TCUiTraitsUnsigned(
       const std::string& Label,
       const std::string& UiUnits = std::string());
 

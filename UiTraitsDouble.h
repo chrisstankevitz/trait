@@ -6,13 +6,13 @@
 //-----------------------------------------------------------------------------
 // This class describes characteristics a double parameter has
 //-----------------------------------------------------------------------------
-class TCTraitsDouble
+class TCUiTraitsDouble
 {
   public:
 
     typedef double TDType;
 
-    TCTraitsDouble(
+    TCUiTraitsDouble(
       const std::string& Label,
       const std::string& UiUnits = std::string(),
       const boost::optional<unsigned>& UiDigitsAfterDecimal =

@@ -1,22 +1,22 @@
 #pragma once
 
 #include "Position.h"
-#include "TraitsDouble.h"
-#include "TraitsUnsigned.h"
 #include "Traitses.h"
+#include "UiTraitsDouble.h"
+#include "UiTraitsUnsigned.h"
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 class TCPositionUiTraits
-: public TCTraitses<TCPosition, TCTraitsDouble, TCTraitsUnsigned>
+: public TCTraitses<TCPosition, TCUiTraitsDouble, TCUiTraitsUnsigned>
 {
   public:
 
-    static const TCTraitsDouble sLatitudeTraits;
+    static const TCUiTraitsDouble sLatitudeTraits;
 
-    static const TCTraitsDouble sAltitudeTraits;
+    static const TCUiTraitsDouble sAltitudeTraits;
 
-    static const TCTraitsUnsigned sStepsTraits;
+    static const TCUiTraitsUnsigned sStepsTraits;
 
     TCPositionUiTraits();
 };

@@ -1,10 +1,10 @@
-#include "TraitsDouble.h"
+#include "UiTraitsDouble.h"
 #include <iomanip>
 #include <sstream>
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-std::string TCTraitsDouble::GetString(double Value) const
+std::string TCUiTraitsDouble::GetString(double Value) const
 {
   std::string Return = mLabel;
 
@@ -24,7 +24,7 @@ std::string TCTraitsDouble::GetString(double Value) const
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-std::string TCTraitsDouble::GetDoubleAsString(double Value) const
+std::string TCUiTraitsDouble::GetDoubleAsString(double Value) const
 {
   if (Value != Value)
   {
@@ -47,7 +47,7 @@ std::string TCTraitsDouble::GetDoubleAsString(double Value) const
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-TCTraitsDouble::TCTraitsDouble(
+TCUiTraitsDouble::TCUiTraitsDouble(
   const std::string& Label,
   const std::string& UiUnits,
   const boost::optional<unsigned>& UiDigitsAfterDecimal,

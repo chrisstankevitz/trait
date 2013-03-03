@@ -1,9 +1,9 @@
-#include "TraitsUnsigned.h"
+#include "UiTraitsUnsigned.h"
 #include <sstream>
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-TCTraitsUnsigned::TCTraitsUnsigned(
+TCUiTraitsUnsigned::TCUiTraitsUnsigned(
   const std::string& Label,
   const std::string& UiUnits)
   : mLabel(Label),
@@ -13,7 +13,7 @@ TCTraitsUnsigned::TCTraitsUnsigned(
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-std::string TCTraitsUnsigned::GetString(unsigned Value) const
+std::string TCUiTraitsUnsigned::GetString(unsigned Value) const
 {
   std::ostringstream Stream;
 
