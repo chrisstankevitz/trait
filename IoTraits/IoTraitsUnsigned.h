@@ -1,4 +1,6 @@
 #pragma once
+
+#include <boost/optional.hpp>
 #include <iosfwd>
 
 //-----------------------------------------------------------------------------
@@ -14,16 +16,18 @@ class TCIoTraitsUnsigned
       eUint32BigEndian
     };
 
+    typedef boost::optional<unsigned> TDOptional;
+
     TCIoTraitsUnsigned(
       TEEncoding Encoding,
-      unsigned ScaleToEncode = 1,
-      unsigned TranslateToEncode = 0);
+      TDOptional ScaleToEncode = TDOptional(),
+      TDOptional TranslateToEncode = TDOptional());
 
     TEEncoding mEncoding;
 
-    unsigned mScaleToEncode;
+    TDOptional mScaleToEncode;
 
-    unsigned mTranslateToEncode;
+    TDOptional mTranslateToEncode;
 
     void Write(unsigned Value, std::ostream& Stream) const;
 };
