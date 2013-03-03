@@ -1,5 +1,7 @@
+#include "IoTraits/IoTraitsStreamer.h"
 #include "UiTraits/UiTraitsPrinter.h"
 #include "Position/Position.h"
+#include "Position/PositionIoTraits.h"
 #include "Position/PositionUiTraits.h"
 
 //-----------------------------------------------------------------------------
@@ -17,6 +19,10 @@ int main()
   static TCPositionUiTraits PositionUiTraits;
 
   PositionUiTraits.Visit(TCUiTraitsPrinter(), Position);
+
+  static TCPositionIoTraits PositionIoTraits;
+
+  PositionIoTraits.Visit(TCIoTraitsStreamer(), Position);
 
   return 0;
 }

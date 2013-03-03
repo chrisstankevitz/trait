@@ -8,6 +8,12 @@ ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
 INCLUDE_DIRECTORIES(".")
 
+ADD_LIBRARY(IoTraits
+  IoTraits/IoTraitsDouble.cpp
+  IoTraits/IoTraitsStreamer.cpp
+  IoTraits/IoTraitsUnsigned.cpp
+  )
+
 ADD_LIBRARY(Traits
   Traits/Traitses.cpp
   )
@@ -28,10 +34,12 @@ ADD_LIBRARY(Utility
 
 ADD_LIBRARY(Position
   Position/Position.cpp
+  Position/PositionIoTraits.cpp
   Position/PositionUiTraits.cpp
   )
 
 TARGET_LINK_LIBRARIES(Position
+  IoTraits
   Traits
   UiTraits
   )
@@ -41,6 +49,7 @@ ADD_EXECUTABLE(TraitsDemo
   )
 
 TARGET_LINK_LIBRARIES(TraitsDemo
+  IoTraits
   Position
   UiTraits
   )
