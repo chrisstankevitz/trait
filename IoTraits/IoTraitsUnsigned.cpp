@@ -7,19 +7,21 @@ using std::ostream;
 //-----------------------------------------------------------------------------
 TCIoTraitsUnsigned::TCIoTraitsUnsigned(
   TEEncoding Encoding,
-  unsigned Scale,
-  unsigned Translate)
+  unsigned ScaleToEncode,
+  unsigned TranslateToEncode)
   : mEncoding(Encoding),
-    mScale(Scale),
-    mTranslate(Translate)
+    mScaleToEncode(ScaleToEncode),
+    mTranslateToEncode(TranslateToEncode)
 {
 }
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void TCIoTraitsUnsigned::Write(unsigned Value_, ostream& Stream) const
+void TCIoTraitsUnsigned::Write(unsigned Value, ostream& Stream) const
 {
-  const unsigned Value = mScale * (Value - mTranslate);
+  Value -= mTranslateToEncode;
+
+  Value *= mScaleToEncode;
 
   switch (mEncoding)
   {

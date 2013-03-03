@@ -17,14 +17,14 @@ class TCIoTraitsDouble
 
     TCIoTraitsDouble(
       TEEncoding Encoding,
-      double Scale = 1,
-      double Translate = 0);
+      double ScaleToEncode = 1,
+      double TranslateToEncode = 0);
 
     TEEncoding mEncoding;
 
-    double mScale;
+    double mScaleToEncode;
 
-    double mTranslate;
+    double mTranslateToEncode;
 
     void Write(double Value, std::ostream& Stream) const;
 };

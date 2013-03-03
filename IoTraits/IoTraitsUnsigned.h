@@ -16,14 +16,14 @@ class TCIoTraitsUnsigned
 
     TCIoTraitsUnsigned(
       TEEncoding Encoding,
-      unsigned Scale = 1,
-      unsigned Translate = 0);
+      unsigned ScaleToEncode = 1,
+      unsigned TranslateToEncode = 0);
 
     TEEncoding mEncoding;
 
-    unsigned mScale;
+    unsigned mScaleToEncode;
 
-    unsigned mTranslate;
+    unsigned mTranslateToEncode;
 
     void Write(unsigned Value, std::ostream& Stream) const;
 };

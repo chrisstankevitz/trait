@@ -7,19 +7,21 @@ using std::ostream;
 //-----------------------------------------------------------------------------
 TCIoTraitsDouble::TCIoTraitsDouble(
   TEEncoding Encoding,
-  double Scale,
-  double Translate)
+  double ScaleToEncode,
+  double TranslateToEncode)
   : mEncoding(Encoding),
-    mScale(Scale),
-    mTranslate(Translate)
+    mScaleToEncode(ScaleToEncode),
+    mTranslateToEncode(TranslateToEncode)
 {
 }
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void TCIoTraitsDouble::Write(double Value_, ostream& Stream) const
+void TCIoTraitsDouble::Write(double Value, ostream& Stream) const
 {
-  const double Value = mScale * (Value - mTranslate);
+  Value -= mTranslateToEncode;
+
+  Value *= mScaleToEncode;
 
   switch (mEncoding)
   {
