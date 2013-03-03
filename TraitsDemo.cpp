@@ -17,7 +17,7 @@ int main()
 
   static TCPositionUiTraits PositionUiTraits;
 
-  PositionUiTraits.Visit(TCTraitsPrinter(), &Position);
+  PositionUiTraits.Visit(TCTraitsPrinter(), Position);
 
   return 0;
 }

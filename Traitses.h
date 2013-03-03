@@ -16,11 +16,11 @@ class TCTraitses
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     template<class TAVisitor>
-    void Visit(const TAVisitor& Visitor, const TAObject* pObject)
+    void Visit(const TAVisitor& Visitor, const TAObject& Object)
     {
       for (const auto& Item : mItems)
       {
-        boost::apply_visitor(TCVisitor<TAVisitor>(Visitor, pObject), Item);
+        boost::apply_visitor(TCVisitor<TAVisitor>(Visitor, Object), Item);
       }
     }
 
@@ -33,7 +33,7 @@ class TCTraitses
     {
       TSItem(
         const TATraits* pTraits,
-        boost::function<const typename TATraits::TDType&(const TAObject*)> Get)
+        boost::function<const typename TATraits::TDType&(const TAObject&)> Get)
         : mpTraits(pTraits),
           mGet(Get)
       {
@@ -41,7 +41,7 @@ class TCTraitses
 
       const TATraits* mpTraits;
 
-      boost::function<const typename TATraits::TDType&(const TAObject*)> mGet;
+      boost::function<const typename TATraits::TDType&(const TAObject&)> mGet;
     };
 
     typedef typename
@@ -56,23 +56,23 @@ class TCTraitses
     {
       public:
 
-        TCVisitor(const TAVisitor& Visitor, const TAObject* pObject)
+        TCVisitor(const TAVisitor& Visitor, const TAObject& Object)
           : mVisitor(Visitor),
-            mpObject(pObject)
+            mObject(Object)
         {
         }
 
         template <class TATraits>
         void operator()(const TSItem<TATraits>& Item) const
         {
-          mVisitor(*Item.mpTraits, Item.mGet(mpObject));
+          mVisitor(*Item.mpTraits, Item.mGet(mObject));
         }
 
       private:
 
         const TAVisitor& mVisitor;
 
-        const TAObject* mpObject;
+        const TAObject& mObject;
     };
 
     //-------------------------------------------------------------------------
