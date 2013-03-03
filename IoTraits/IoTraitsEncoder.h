@@ -5,16 +5,16 @@
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-class TCIoTraitsStreamer
+class TCIoTraitsEncoder
 {
   public:
 
     template <typename TATraits>
     void operator()(
       const TATraits& Traits,
-      const typename TATraits::TDType& Value) const
+      const typename TATraits::TDType& Value)
     {
-      //Traits.Write(Value, mStream);
+      Traits.Write(Value, mStream);
     }
 
     std::ostringstream mStream;

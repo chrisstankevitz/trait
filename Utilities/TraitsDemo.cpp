@@ -1,4 +1,4 @@
-#include "IoTraits/IoTraitsStreamer.h"
+#include "IoTraits/IoTraitsEncoder.h"
 #include "UiTraits/UiTraitsPrinter.h"
 #include "Position/Position.h"
 #include "Position/PositionIoTraits.h"
@@ -22,7 +22,14 @@ int main()
 
   static TCPositionIoTraits PositionIoTraits;
 
-  PositionIoTraits.Visit(TCIoTraitsStreamer(), Position);
+  TCIoTraitsEncoder IoTraitsEncoder;
+
+  PositionIoTraits.Visit(IoTraitsEncoder, Position);
+
+  std::cout
+    << "Encoded position byte count: "
+    << IoTraitsEncoder.mStream.str().size()
+    << std::endl;
 
   return 0;
 }
