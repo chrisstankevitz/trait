@@ -1,6 +1,7 @@
 #include "IoTraitsDouble.h"
 #include <iostream>
 
+using std::istream;
 using std::ostream;
 
 //-----------------------------------------------------------------------------
@@ -21,7 +22,7 @@ void TCIoTraitsDouble::Write(double Value, ostream& Stream) const
 {
   if (mTranslateToEncode)
   {
-    Value -= *mTranslateToEncode;
+    Value += *mTranslateToEncode;
   }
 
   if (mScaleToEncode)
@@ -47,4 +48,41 @@ void TCIoTraitsDouble::Write(double Value, ostream& Stream) const
       break;
     }
   }
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void TCIoTraitsDouble::Read(double& Value, istream& Stream) const
+{
+  switch (mEncoding)
+  {
+    case eFloat64BigEndian:
+    {
+      Stream.read(reinterpret_cast<char*>(&Value), 8);
+
+      break;
+    }
+
+    case eUint32BigEndian:
+    {
+      unsigned ValueAsUnsigned;
+
+      Stream.read(reinterpret_cast<char*>(&ValueAsUnsigned), 4);
+
+      Value = static_cast<double>(ValueAsUnsigned);
+
+      break;
+    }
+  }
+
+  if (mScaleToEncode)
+  {
+    Value /= *mScaleToEncode;
+  }
+
+  if (mTranslateToEncode)
+  {
+    Value -= *mTranslateToEncode;
+  }
+
 }

@@ -30,4 +30,6 @@ class TCIoTraitsUnsigned
     TDOptional mTranslateToEncode;
 
     void Write(unsigned Value, std::ostream& Stream) const;
+
+    void Read(unsigned& Value, std::istream& Stream) const;
 };

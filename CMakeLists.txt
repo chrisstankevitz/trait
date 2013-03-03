@@ -9,6 +9,7 @@ ENDIF(CMAKE_COMPILER_IS_GNUCC)
 INCLUDE_DIRECTORIES(".")
 
 ADD_LIBRARY(IoTraits
+  IoTraits/IoTraitsDecoder.cpp
   IoTraits/IoTraitsDouble.cpp
   IoTraits/IoTraitsEncoder.cpp
   IoTraits/IoTraitsUnsigned.cpp

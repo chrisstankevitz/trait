@@ -1,6 +1,7 @@
 #include "IoTraitsUnsigned.h"
 #include <iostream>
 
+using std::istream;
 using std::ostream;
 
 //-----------------------------------------------------------------------------
@@ -21,7 +22,7 @@ void TCIoTraitsUnsigned::Write(unsigned Value, ostream& Stream) const
 {
   if (mTranslateToEncode)
   {
-    Value -= *mTranslateToEncode;
+    Value += *mTranslateToEncode;
   }
 
   if (mScaleToEncode)
@@ -37,5 +38,30 @@ void TCIoTraitsUnsigned::Write(unsigned Value, ostream& Stream) const
 
       break;
     }
+  }
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void TCIoTraitsUnsigned::Read(unsigned& Value, istream& Stream) const
+{
+  switch (mEncoding)
+  {
+    case eUint32BigEndian:
+    {
+      Stream.read(reinterpret_cast<char*>(&Value), 4);
+
+      break;
+    }
+  }
+
+  if (mScaleToEncode)
+  {
+    Value /= *mScaleToEncode;
+  }
+
+  if (mTranslateToEncode)
+  {
+    Value -= *mTranslateToEncode;
   }
 }

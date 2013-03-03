@@ -9,6 +9,23 @@ class TCIoTraitsEncoder
 {
   public:
 
+    TCIoTraitsEncoder(std::ostream& Stream)
+    : mStringStream(),
+      mStream(Stream)
+    {
+    }
+
+    TCIoTraitsEncoder()
+    : mStringStream(),
+      mStream(mStringStream)
+    {
+    }
+
+    std::string GetBytes() const
+    {
+      return mStringStream.str();
+    }
+
     template <typename TATraits>
     void operator()(
       const TATraits& Traits,
@@ -17,5 +34,7 @@ class TCIoTraitsEncoder
       Traits.Write(Value, mStream);
     }
 
-    std::ostringstream mStream;
+    std::ostringstream mStringStream;
+
+    std::ostream& mStream;
 };

@@ -43,6 +43,21 @@ class TCTraitses
       }
     }
 
+    //-------------------------------------------------------------------------
+    // Visitor: mutable
+    // Object: mutable
+    //-------------------------------------------------------------------------
+    template<class TAVisitor>
+    void Visit(TAVisitor& Visitor, TAObject& Object)
+    {
+      TCVisitorMM<TAVisitor> VisitorMM(Visitor, Object);
+
+      for (const auto& Item : mItems)
+      {
+        boost::apply_visitor(VisitorMM, Item);
+      }
+    }
+
   protected:
 
     //-------------------------------------------------------------------------
@@ -50,17 +65,27 @@ class TCTraitses
     template <class TATraits>
     struct TSItem
     {
+      typedef boost::function<
+        const typename TATraits::TDType&(const TAObject&)> TDGet;
+
+      typedef boost::function<
+        void (TAObject&, const typename TATraits::TDType&)> TDSet;
+
       TSItem(
         const TATraits* pTraits,
-        boost::function<const typename TATraits::TDType&(const TAObject&)> Get)
+        const TDGet& Get,
+        const TDSet& Set)
         : mpTraits(pTraits),
-          mGet(Get)
+          mGet(Get),
+          mSet(Set)
       {
       }
 
       const TATraits* mpTraits;
 
-      boost::function<const typename TATraits::TDType&(const TAObject&)> mGet;
+      TDGet mGet;
+
+      TDSet mSet;
     };
 
     typedef typename
@@ -122,6 +147,32 @@ class TCTraitses
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    template<class TAVisitor>
+    class TCVisitorMM : public boost::static_visitor<void>
+    {
+      public:
+
+        TCVisitorMM(TAVisitor& Visitor, TAObject& Object)
+          : mVisitor(Visitor),
+            mObject(Object)
+        {
+        }
+
+        template <class TATraits>
+        void operator()(const TSItem<TATraits>& Item)
+        {
+          Item.mSet(mObject, mVisitor(*Item.mpTraits));
+        }
+
+      private:
+
+        TAVisitor& mVisitor;
+
+        TAObject& mObject;
+    };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     TCTraitses(const std::vector<TDItem>& Items)
       : mItems(Items)
     {
@@ -129,12 +180,23 @@ class TCTraitses
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    template <class TAMember, class TAType>
+    static void DoSet(TAMember Member, TAObject& Object, const TAType& Type)
+    {
+      boost::bind<TAType&>(Member, &Object)() = Type;
+    }
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     template <class TATraits, class TAMember>
-    static TDItem Make(const TATraits& Traits, TAMember Member)
+    static TDItem Make(const TATraits& Traits, const TAMember& Member)
     {
       typedef typename TATraits::TDType TDType;
 
-      return TSItem<TATraits>(&Traits, boost::bind<const TDType&>(Member, _1));
+      return TSItem<TATraits>(
+        &Traits,
+        boost::bind<const TDType&>(Member, _1),
+        boost::bind(DoSet<TAMember, TDType>, Member, _1, _2));
     }
 
   private:

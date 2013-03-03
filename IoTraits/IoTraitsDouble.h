@@ -31,4 +31,6 @@ class TCIoTraitsDouble
     TDOptional mTranslateToEncode;
 
     void Write(double Value, std::ostream& Stream) const;
+
+    void Read(double& Value, std::istream& Stream) const;
 };
