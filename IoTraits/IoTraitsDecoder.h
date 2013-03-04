@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boost/function.hpp>
+#include <boost/mpl/bool.hpp>
 #include <iostream>
 #include <sstream>
 
@@ -22,18 +22,16 @@ class TCIoTraitsDecoder
     {
     }
 
-    template <class TATraits, class TAObject>
-    void operator()(
-      const TATraits& Traits,
-      TAObject& Object,
-      const boost::function<const typename TATraits::TDType&(const TAObject&)>& Get,
-      const boost::function<void (TAObject&, const typename TATraits::TDType&)>& Set)
+    typedef boost::mpl::bool_<false> TDRead;
+
+    template <class TATraits>
+    typename TATraits::TDType operator()(const TATraits& Traits)
     {
       typename TATraits::TDType Value;
 
       Traits.Read(Value, mStream);
 
-      Set(Object, Value);
+      return Value;
     }
 
     std::istringstream mStringStream;

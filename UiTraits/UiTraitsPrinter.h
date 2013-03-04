@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boost/function.hpp>
+#include <boost/mpl/bool.hpp>
 #include <iostream>
 
 //-----------------------------------------------------------------------------
@@ -9,13 +9,13 @@ class TCUiTraitsPrinter
 {
   public:
 
-    template <class TATraits, class TAObject>
+    typedef boost::mpl::bool_<true> TDRead;
+
+    template <class TATraits>
     void operator()(
       const TATraits& Traits,
-      const TAObject& Object,
-      const boost::function<const typename TATraits::TDType&(const TAObject&)>& Get,
-      const boost::function<void (TAObject&, const typename TATraits::TDType&)>& Set) const
+      const typename TATraits::TDType& Value)
     {
-      std::cout << Traits.GetString(Get(Object)) << '\n';
+      std::cout << Traits.GetString(Value) << '\n';
     }
 };

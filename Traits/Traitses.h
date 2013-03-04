@@ -81,10 +81,60 @@ class TCTraitses
         {
         }
 
+        //---------------------------------------------------------------------
+        //---------------------------------------------------------------------
+        template<
+          class TAReadX,
+          class TAVisitorX,
+          class TATraitsX,
+          class TAObjectX,
+          class TAGetX,
+          class TASetX>
+        static typename boost::enable_if<TAReadX>::type VisitReadWrite(
+          TAVisitorX&& Visitor,
+          TATraitsX&& Traits,
+          TAObjectX&& Object,
+          TAGetX&& Get,
+          TASetX&& Set)
+        {
+          Visitor(Traits, Get(Object));
+        }
+
+        //---------------------------------------------------------------------
+        //---------------------------------------------------------------------
+        template<
+          class TAReadX,
+          class TAVisitorX,
+          class TATraitsX,
+          class TAObjectX,
+          class TAGetX,
+          class TASetX>
+        static typename boost::disable_if<TAReadX>::type VisitReadWrite(
+          TAVisitorX&& Visitor,
+          TATraitsX&& Traits,
+          TAObjectX&& Object,
+          TAGetX&& Get,
+          TASetX&& Set)
+        {
+          Set(Object, Visitor(Traits));
+        }
+
         template <class TATraits>
         void operator()(const TSItem<TATraits>& Item) const
         {
-          mVisitor(*Item.mpTraits, mObject, Item.mGet, Item.mSet);
+          typedef typename std::decay<TAUniversalVisitor>::type
+            TDDecayedVisitor;
+
+          typedef typename TDDecayedVisitor::TDRead TDMplBoolType;
+
+          VisitReadWrite<TDMplBoolType>(
+            mVisitor,
+            *Item.mpTraits,
+            mObject,
+            Item.mGet,
+            Item.mSet);
+
+          //mVisitor(*Item.mpTraits, mObject, Item.mGet, Item.mSet);
         }
 
       private:
