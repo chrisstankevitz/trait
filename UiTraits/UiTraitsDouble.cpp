@@ -40,7 +40,12 @@ std::string TCUiTraitsDouble::GetDoubleAsString(double Value) const
       << std::setprecision(*mUiDigitsAfterDecimal);
   }
 
-  Stream << Value * mInternalToUiScale;
+  if (mInternalToUiScale)
+  {
+    Value *= *mInternalToUiScale;
+  }
+
+  Stream << Value;
 
   return Stream.str();
 }
@@ -51,7 +56,7 @@ TCUiTraitsDouble::TCUiTraitsDouble(
   const std::string& Label,
   const std::string& UiUnits,
   const boost::optional<unsigned>& UiDigitsAfterDecimal,
-  double InternalToUiScale)
+  const boost::optional<double>&  InternalToUiScale)
   : mLabel(Label),
     mUiUnits(UiUnits),
     mUiDigitsAfterDecimal(UiDigitsAfterDecimal),

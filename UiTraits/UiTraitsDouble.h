@@ -12,12 +12,15 @@ class TCUiTraitsDouble
 
     typedef double TDType;
 
+    typedef boost::optional<unsigned> TDOptUint32;
+
+    typedef boost::optional<double> TDOptFloat64;
+
     TCUiTraitsDouble(
       const std::string& Label,
       const std::string& UiUnits = std::string(),
-      const boost::optional<unsigned>& UiDigitsAfterDecimal =
-        boost::optional<unsigned>(),
-      double InternalToUiScale = 1);
+      const TDOptUint32& UiDigitsAfterDecimal = TDOptUint32(),
+      const TDOptFloat64& InternalToUiScale = TDOptFloat64());
 
     std::string mLabel;
 
@@ -25,7 +28,7 @@ class TCUiTraitsDouble
 
     boost::optional<unsigned> mUiDigitsAfterDecimal;
 
-    double mInternalToUiScale;
+    boost::optional<double> mInternalToUiScale;
 
     std::string GetString(double Value) const;
 
